@@ -5,27 +5,19 @@ pattern.push(default_pattern);
 for (let i=1; i<=5; i++) {
 	switch (i) {
 		case 1:
-			console.log(i);
-			pattern.push(loop(i, min(), default_pattern));
+			pattern.push(loop(i, min()));
 			break;
 		case 2:
-			console.log(i);
-			pattern.push(loop(i, hour(), default_pattern));
+			pattern.push(loop(i, hour()));
 			break;
-		case 3:
-			console.log(i);
-			pattern.push(loop(i, sys_date(), default_pattern));
-			break;
-		case 4:
-			console.log(i);
-			pattern.push(loop(i, month(), default_pattern));
-			break;
-		case 5:
-			console.log(i);
-			pattern.push(loop(i, day(), default_pattern));
-			break;
-		// case 6:
-		// 	console.log(i);
+		// case 3:
+		// 	pattern.push(loop(i, sys_date(), default_pattern));
+		// 	break;
+		// case 4:
+		// 	pattern.push(loop(i, month(), default_pattern));
+		// 	break;
+		// case 5:
+		// 	pattern.push(loop(i, day(), default_pattern));
 		// 	break;
 		default:
 			console.log('Invalid');
@@ -55,35 +47,47 @@ function day() {
 	return date.getDay();
 }
 
-function loop(i, patternValue, default_pattern) {
+function loop(i, patternValue) {
 	let array=[];
-	// for (let j=0; j<=i; j++) {
-	// 	if( j==0 ) 
-	// 		array.push(default_pattern);
-	// 	else {
-			switch (i) {
-				case 1:
-					array.push(patternValue.toString()+" * * * *");
-					break;
-				case 2:
-				array.push("* "+patternValue.toString()+" * * *");
-					break;
-				case 3:
-					array.push("* * "+patternValue.toString()+" * *");
-					break;
-				case 4:
-					array.push("* * * "+patternValue.toString()+" *");
-					break;
-				case 5:
-					array.push("* * * * "+patternValue.toString());
-					break;
-				
-				default: 
-					console.log('Out of Range');
-		// 	}
-		// }
-		console.log('\t',j, '\t : ', patternValue);
+	switch (i) {
+		case 1:
+			array.push(patternValue.toString()+" * * * *");
+			break;
+		case 2:
+			for (let j=0; j<i; j++) {
+				switch (j) {
+					case 0:
+						array.push("* "+patternValue.toString()+" * * *");
+						break;
+					case 1:
+						array.push(min()+" "+patternValue.toString()+" * * *");
+						break;
+					case 2: 
+						array.push(min()+" "+patternValue.toString()+" "+sys_date()+" * *");
+						break;
+					case 3: 
+					array.push(min()+" "+patternValue.toString()+" "+sys_date()+" "+month()+" *");
+						break;
+					case 4: 
+					array.push(min()+" "+patternValue.toString()+" "+sys_date()+" "+month()+" "+day());
+						break;
+					case 5: 
+						array.push(min()+" "+patternValue.toString()+" * * *");
+						break;
+				}	
+			}
+			break;
+		case 3:
+			array.push("* * "+patternValue.toString()+" * *");
+			break;
+		case 4:
+			array.push("* * * "+patternValue.toString()+" *");
+			break;
+		case 5:
+			array.push("* * * * "+patternValue.toString());
+			break;
+		default: 
+			console.log('Out of Range');
 	}
-	console.log(array);
 	return array;
 }
